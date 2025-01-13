@@ -1,0 +1,50 @@
+def calcular_economia(consumos, tarifa, tipo_tarifa):
+    # Calcular a média de consumo
+    media_consumo = sum(consumos) / len(consumos)
+    
+    # Determinar o desconto e a cobertura com base no consumo médio
+    if media_consumo < 10000:
+        descontos = {"Residencial": 18, "Comercial": 16, "Industrial": 12}
+        cobertura = 90
+    elif 10000 <= media_consumo <= 20000:
+        descontos = {"Residencial": 22, "Comercial": 18, "Industrial": 15}
+        cobertura = 95
+    else:
+        descontos = {"Residencial": 25, "Comercial": 22, "Industrial": 18}
+        cobertura = 99
+
+    # Obter o desconto com base no tipo de tarifa
+    desconto = descontos.get(tipo_tarifa, 0)
+    
+    # Calcular economia mensal e anual
+    gasto_mensal = media_consumo * tarifa
+    economia_mensal = gasto_mensal * (desconto / 100)
+    economia_anual = economia_mensal * 12
+    
+    # Resultados
+    return {
+        "Economia Anual (R$)": round(economia_anual, 2),
+        "Economia Mensal (R$)": round(economia_mensal, 2),
+        "Desconto Aplicado (%)": desconto,
+        "Cobertura (%)": cobertura
+    }
+
+# Inputs do usuário
+print("Calculadora de Economia de Energia")
+consumos = [
+    float(input("Digite o consumo do 1º mês (kWh): ")),
+    float(input("Digite o consumo do 2º mês (kWh): ")),
+    float(input("Digite o consumo do 3º mês (kWh): "))
+]
+tarifa = float(input("Digite o valor da tarifa (R$ por kWh): "))
+tipo_tarifa = input("Digite o tipo de tarifa (Residencial, Comercial, Industrial): ")
+
+# Garantir que o tipo de tarifa é válido
+if tipo_tarifa not in ["Residencial", "Comercial", "Industrial"]:
+    print("Tipo de tarifa inválido! Tente novamente.")
+else:
+    # Calcular e exibir os resultados
+    resultados = calcular_economia(consumos, tarifa, tipo_tarifa)
+    print("\nResultados:")
+    for chave, valor in resultados.items():
+        print(f"{chave}: {valor}")
